@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ingenierías DH — Soluciones Tecnológicas Integrales</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1628;
+    --navy2: #0f2040;
+    --cyan: #00c8f0;
+    --cyan2: #00e5ff;
+    --gold: #f0a500;
+    --white: #f0f6ff;
+    --gray: #8ba0be;
+    --card-dark: #0d1f3c;
+    --card-light: #e8f4fb;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Exo 2', sans-serif;
+    background: var(--navy);
+    color: var(--white);
+    overflow-x: hidden;
+  }
+
+  /* ─── BACKGROUND GRID ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,200,240,.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,200,240,.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2.5rem;
+    background: rgba(10,22,40,.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0,200,240,.15);
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: .7rem;
+    text-decoration: none;
+  }
+
+  .nav-logo .logo-badge {
+    width: 42px; height: 42px;
+    background: linear-gradient(135deg, var(--cyan), var(--navy2));
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Space Mono', monospace;
+    font-weight: 700;
+    font-size: .85rem;
+    color: var(--white);
+    border: 2px solid var(--cyan);
+    box-shadow: 0 0 14px rgba(0,200,240,.4);
+  }
+
+  .nav-logo span {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--white);
+    letter-spacing: .04em;
+  }
+
+  .nav-logo span em {
+    color: var(--cyan);
+    font-style: normal;
+  }
+
+  nav ul {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  nav ul a {
+    color: var(--gray);
+    text-decoration: none;
+    font-size: .9rem;
+    font-weight: 600;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    transition: color .3s;
+  }
+
+  nav ul a:hover { color: var(--cyan); }
+
+  .nav-cta {
+    background: linear-gradient(135deg, var(--cyan), #007fa8);
+    color: var(--navy) !important;
+    padding: .5rem 1.2rem;
+    border-radius: 6px;
+    font-weight: 700 !important;
+    color: var(--navy) !important;
+    transition: box-shadow .3s !important;
+  }
+
+  .nav-cta:hover { box-shadow: 0 0 20px rgba(0,200,240,.6); color: var(--navy) !important; }
+
+  /* ─── HERO ─── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 7rem 2rem 4rem;
+    overflow: hidden;
+  }
+
+  .hero-glow {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 700px; height: 400px;
+    background: radial-gradient(ellipse, rgba(0,200,240,.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: .75rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 1.2rem;
+    opacity: 0;
+    animation: fadeUp .7s .2s forwards;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.8rem, 6vw, 5rem);
+    font-weight: 900;
+    line-height: 1.05;
+    max-width: 800px;
+    opacity: 0;
+    animation: fadeUp .7s .4s forwards;
+  }
+
+  .hero h1 .accent { color: var(--cyan); }
+
+  .hero p {
+    margin-top: 1.4rem;
+    font-size: 1.15rem;
+    color: var(--gray);
+    max-width: 560px;
+    opacity: 0;
+    animation: fadeUp .7s .6s forwards;
+  }
+
+  .hero-btns {
+    margin-top: 2.5rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    opacity: 0;
+    animation: fadeUp .7s .8s forwards;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--cyan), #007fa8);
+    color: var(--navy);
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    padding: .85rem 2rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform .2s, box-shadow .2s;
+    display: inline-flex; align-items: center; gap: .5rem;
+  }
+
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,200,240,.45); }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--cyan);
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    padding: .85rem 2rem;
+    border: 2px solid var(--cyan);
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background .2s, transform .2s;
+    display: inline-flex; align-items: center; gap: .5rem;
+  }
+
+  .btn-outline:hover { background: rgba(0,200,240,.1); transform: translateY(-2px); }
+
+  /* Scrolling marquee */
+  .marquee-wrap {
+    margin-top: 4rem;
+    width: 100%;
+    overflow: hidden;
+    opacity: 0;
+    animation: fadeUp .7s 1s forwards;
+  }
+
+  .marquee-track {
+    display: flex;
+    gap: 3rem;
+    width: max-content;
+    animation: marquee 22s linear infinite;
+    font-family: 'Space Mono', monospace;
+    font-size: .75rem;
+    color: rgba(0,200,240,.45);
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    padding: .8rem 0;
+    border-top: 1px solid rgba(0,200,240,.1);
+    border-bottom: 1px solid rgba(0,200,240,.1);
+  }
+
+  @keyframes marquee { to { transform: translateX(-50%); } }
+
+  /* ─── SECTION COMMONS ─── */
+  section { position: relative; z-index: 1; padding: 5rem 2rem; }
+  .section-inner { max-width: 1100px; margin: 0 auto; }
+
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: .7rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: .6rem;
+  }
+
+  .section-title {
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+
+  .section-title .accent { color: var(--cyan); }
+
+  .section-sub {
+    color: var(--gray);
+    font-size: 1.05rem;
+    max-width: 600px;
+    margin-bottom: 3rem;
+  }
+
+  /* ─── SERVICES ─── */
+  #servicios { background: var(--navy2); }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .service-card {
+    background: var(--card-dark);
+    border: 1px solid rgba(0,200,240,.12);
+    border-radius: 16px;
+    padding: 2rem 1.5rem;
+    transition: transform .3s, border-color .3s, box-shadow .3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .service-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(0,200,240,.06) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity .3s;
+  }
+
+  .service-card:hover { transform: translateY(-6px); border-color: var(--cyan); box-shadow: 0 12px 40px rgba(0,200,240,.2); }
+  .service-card:hover::before { opacity: 1; }
+
+  .service-icon {
+    width: 60px; height: 60px;
+    background: linear-gradient(135deg, rgba(0,200,240,.15), rgba(0,200,240,.05));
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.7rem;
+    margin-bottom: 1.2rem;
+    border: 1px solid rgba(0,200,240,.2);
+  }
+
+  .service-card h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: .6rem;
+  }
+
+  .service-card p {
+    font-size: .9rem;
+    color: var(--gray);
+    line-height: 1.6;
+  }
+
+  /* ─── WHY US ─── */
+  #nosotros { background: var(--navy); }
+
+  .why-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  .why-list { list-style: none; display: flex; flex-direction: column; gap: 1.2rem; }
+
+  .why-item {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 1.2rem;
+    background: var(--card-dark);
+    border-radius: 12px;
+    border: 1px solid rgba(0,200,240,.08);
+    transition: border-color .3s;
+  }
+
+  .why-item:hover { border-color: rgba(0,200,240,.3); }
+
+  .why-check {
+    width: 28px; height: 28px;
+    background: linear-gradient(135deg, var(--cyan), #007fa8);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-size: .85rem;
+    color: var(--navy);
+    font-weight: 700;
+  }
+
+  .why-item h4 { font-size: 1rem; font-weight: 700; margin-bottom: .2rem; }
+  .why-item p { font-size: .88rem; color: var(--gray); }
+
+  .why-visual {
+    background: var(--card-dark);
+    border: 1px solid rgba(0,200,240,.15);
+    border-radius: 20px;
+    padding: 2.5rem;
+    text-align: center;
+  }
+
+  .why-visual .big-num {
+    font-size: 5rem;
+    font-weight: 900;
+    font-family: 'Space Mono', monospace;
+    color: var(--cyan);
+    line-height: 1;
+    text-shadow: 0 0 40px rgba(0,200,240,.4);
+  }
+
+  .why-visual .big-label { font-size: 1rem; color: var(--gray); margin-top: .5rem; }
+
+  .why-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(0,200,240,.1);
+  }
+
+  .stat-item { text-align: center; }
+  .stat-num { font-size: 2rem; font-weight: 900; color: var(--gold); font-family: 'Space Mono', monospace; }
+  .stat-label { font-size: .78rem; color: var(--gray); margin-top: .2rem; }
+
+  /* ─── CTA ─── */
+  #contacto {
+    background: linear-gradient(135deg, #0a1628 0%, #0d2545 50%, #0a1628 100%);
+    text-align: center;
+  }
+
+  .cta-box {
+    background: var(--card-dark);
+    border: 1px solid rgba(0,200,240,.2);
+    border-radius: 24px;
+    padding: 4rem 3rem;
+    max-width: 700px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-box::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(ellipse at center, rgba(0,200,240,.07) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .cta-box h2 { font-size: 2.2rem; font-weight: 900; margin-bottom: .8rem; }
+  .cta-box p { color: var(--gray); font-size: 1.05rem; margin-bottom: 2rem; }
+
+  .whatsapp-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: .8rem;
+    background: linear-gradient(135deg, #25d366, #128c3e);
+    color: #fff;
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding: 1rem 2.2rem;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: transform .2s, box-shadow .2s;
+    box-shadow: 0 4px 20px rgba(37,211,102,.3);
+  }
+
+  .whatsapp-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(37,211,102,.5); }
+
+  .phone-display {
+    margin-top: 1.5rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--cyan);
+    letter-spacing: .08em;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: #060e1a;
+    border-top: 1px solid rgba(0,200,240,.1);
+    padding: 2rem;
+    text-align: center;
+    font-size: .85rem;
+    color: var(--gray);
+  }
+
+  footer strong { color: var(--cyan); }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    nav ul { display: none; }
+    .why-grid { grid-template-columns: 1fr; }
+    .cta-box { padding: 2.5rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">
+    <div class="logo-badge">Dh</div>
+    <span>Ingenierías <em>DH</em></span>
+  </a>
+  <ul>
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#nosotros">Nosotros</a></li>
+    <li><a href="#contacto" class="nav-cta">Contáctanos</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <p class="hero-tag">⚙ Soluciones Tecnológicas Integrales</p>
+  <h1>LA EVOLUCIÓN DIGITAL QUE TU EMPRESA NECESITA</h1>
+  <p>Potenciamos tu empresa a través de tecnología de vanguardia: POS, equipo informático, mantenimiento y seguridad.</p>
+  <div class="hero-btns">
+    <a href="#servicios" class="btn-primary">🔍 Ver Servicios</a>
+    <a href="#contacto" class="btn-outline">💬 WhatsApp</a>
+  </div>
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <span>Puntos de Venta</span><span>•</span>
+      <span>Equipo Informático</span><span>•</span>
+      <span>Mantenimiento Profesional</span><span>•</span>
+      <span>Cámaras de Seguridad</span><span>•</span>
+      <span>Soporte 24/7</span><span>•</span>
+      <span>Precios Competitivos</span><span>•</span>
+      <span>Puntos de Venta</span><span>•</span>
+      <span>Equipo Informático</span><span>•</span>
+      <span>Mantenimiento Profesional</span><span>•</span>
+      <span>Cámaras de Seguridad</span><span>•</span>
+      <span>Soporte 24/7</span><span>•</span>
+      <span>Precios Competitivos</span><span>•</span>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICIOS -->
+<section id="servicios">
+  <div class="section-inner">
+    <p class="section-label">// Nuestros Servicios</p>
+    <h2 class="section-title">Todo lo que tu negocio <span class="accent">necesita</span></h2>
+    <p class="section-sub">Soluciones completas y personalizadas para impulsar tu infraestructura tecnológica.</p>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">🖥️</div>
+        <h3>Puntos de Venta (POS)</h3>
+        <p>Sistemas inteligentes para control de inventarios, ventas y gestión de negocio en tiempo real.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">💻</div>
+        <h3>Venta de Equipo Informático</h3>
+        <p>Computadoras, Laptops, Servidores y periféricos de última generación al mejor precio.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🔧</div>
+        <h3>Mantenimiento Profesional</h3>
+        <p>Soporte técnico preventivo y correctivo para mantener tu infraestructura al 100%.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">📷</div>
+        <h3>Cámaras de Seguridad</h3>
+        <p>Sistemas de vigilancia por video avanzados y monitoreo en tiempo real para tu tranquilidad.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- POR QUÉ ELEGIRNOS -->
+<section id="nosotros">
+  <div class="section-inner">
+    <div class="why-grid">
+      <div>
+        <p class="section-label">// ¿Por qué elegirnos?</p>
+        <h2 class="section-title">Tu tecnología en <span class="accent">las mejores manos</span></h2>
+        <ul class="why-list">
+          <li class="why-item">
+            <div class="why-check">✓</div>
+            <div>
+              <h4>Experiencia Técnica Avanzada</h4>
+              <p>Profesionales certificados con años de experiencia en soluciones empresariales.</p>
+            </div>
+          </li>
+          <li class="why-item">
+            <div class="why-check">✓</div>
+            <div>
+              <h4>Soporte Personalizado 24/7</h4>
+              <p>Disponibles cuando más nos necesitas, sin importar el horario.</p>
+            </div>
+          </li>
+          <li class="why-item">
+            <div class="why-check">✓</div>
+            <div>
+              <h4>Nos ajustamos a tu presupuesto</h4>
+              <p>Soluciones flexibles que se adaptan a negocios de cualquier tamaño.</p>
+            </div>
+          </li>
+          <li class="why-item">
+            <div class="why-check">✓</div>
+            <div>
+              <h4>Precios Competitivos</h4>
+              <p>Calidad premium sin sacrificar tu inversión. Cotiza sin compromiso.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="why-visual">
+        <div class="big-num">100%</div>
+        <div class="big-label">Compromiso con tu negocio</div>
+        <div class="why-stats">
+          <div class="stat-item">
+            <div class="stat-num">24/7</div>
+            <div class="stat-label">Soporte</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">4+</div>
+            <div class="stat-label">Servicios</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">CDMX/EDOMEX</div>
+            <div class="stat-label">Cobertura</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <div class="section-inner">
+    <div class="cta-box">
+      <p class="section-label">// Contáctanos Hoy</p>
+      <h2>¿Listo para <span style="color:var(--cyan)">potenciar</span> tu negocio?</h2>
+      <p>Escríbenos por WhatsApp y recibe una cotización personalizada sin costo.</p>
+      <a href="https://wa.me/5255847587771" class="whatsapp-btn" target="_blank">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        Escribir por WhatsApp
+      </a>
+      <div class="phone-display">55 8475 8771 / 55 2746 7922</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 <strong>Ingenierías DH</strong> — Soluciones Tecnológicas Integrales · Todos los derechos reservados</p>
+</footer>
+
+</body>
+</html>
